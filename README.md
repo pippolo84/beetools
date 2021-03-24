@@ -13,7 +13,7 @@ beetools is a CLI application to manipulate torrent file in [bencode](https://en
 
 It currently supports three subcommands:
 
-- `decode` to decode data (taken from stdin) in bencode format and encode them in JSON format.
+- `decode` to decode data in bencode format and encode them in JSON format.
 
 ```
 $ beetools decode debian-10.8.0-amd64-netinst.iso.torrent | jq .
@@ -34,7 +34,7 @@ $ beetools decode debian-10.8.0-amd64-netinst.iso.torrent | jq .
 }
 ```
 
-- `encode` to decode data (taken from stdin) in JSON format and encode them in bencode format.
+- `encode` to decode data in JSON format and encode them in bencode format.
 
 ```
 $ beetools encode debian-10.8.0-amd64-netinst.iso.json
