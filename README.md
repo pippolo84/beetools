@@ -3,6 +3,12 @@
 [![Go Report Card](https://goreportcard.com/badge/github.com/Pippolo84/beetools)](https://goreportcard.com/report/github.com/Pippolo84/beetools)
 [![Go Reference](https://pkg.go.dev/badge/github.com/Pippolo84/beetools.svg)](https://pkg.go.dev/github.com/Pippolo84/beetools)
 
+<div align="center">
+<img widht="640" height="320" src="assets/logo.jpg">
+</div>
+
+<br />
+
 beetools is a CLI application to manipulate torrent file in [bencode](https://en.wikipedia.org/wiki/Bencode) format.
 
 It currently supports three subcommands:
