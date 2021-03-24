@@ -8,8 +8,8 @@ import (
 	"github.com/pippolo84/beetools/pkg/bencode"
 )
 
-// TorrentInfo holds the "info" part of a .torrent file.
-type TorrentInfo struct {
+// Info holds the "info" part of a .torrent file.
+type Info struct {
 	Length      int64  `json:"length"`
 	Name        string `json:"name"`
 	PieceLength int64  `json:"piece length"`
@@ -18,11 +18,11 @@ type TorrentInfo struct {
 
 // Torrent represents all the information in a .torrent file.
 type Torrent struct {
-	Announce     string      `json:"announce"`
-	Comment      string      `json:"comment"`
-	CreationDate time.Time   `json:"creation date"`
-	HTTPSeeds    []string    `json:"httpseeds"`
-	Info         TorrentInfo `json:"info"`
+	Announce     string    `json:"announce"`
+	Comment      string    `json:"comment"`
+	CreationDate time.Time `json:"creation date"`
+	HTTPSeeds    []string  `json:"httpseeds"`
+	Info         Info      `json:"info"`
 }
 
 // NewTorrent returns a new Torrent initialized with bencode-data from
@@ -37,7 +37,7 @@ func NewTorrent(r io.Reader) (*Torrent, error) {
 	mapValue := d.Value()
 
 	infoValue := mapValue["info"].(map[string]interface{})
-	info := TorrentInfo{
+	info := Info{
 		Length:      infoValue["length"].(int64),
 		Name:        infoValue["name"].(string),
 		PieceLength: infoValue["piece length"].(int64),
