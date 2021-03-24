@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"io"
 	"os"
 
 	"github.com/spf13/cobra"
@@ -12,11 +13,39 @@ func main() {
 		Use:   "encode",
 		Short: "Encode data from JSON",
 		Long:  "Encode data from JSON to bencode format.",
-		Args:  cobra.ExactArgs(0),
-		Run: func(cmd *cobra.Command, _ []string) {
-			if err := encode(os.Stdout, os.Stdin); err != nil {
+		Args:  cobra.RangeArgs(0, 2),
+		RunE: func(cmd *cobra.Command, args []string) error {
+			var (
+				r io.Reader
+				w io.Writer
+			)
+
+			r = os.Stdin
+			if len(args) > 0 {
+				in, err := os.Open(args[0])
+				if err != nil {
+					return err
+				}
+				defer in.Close()
+
+				r = in
+			}
+
+			w = os.Stdout
+			if len(args) > 1 {
+				out, err := os.Create(args[1])
+				if err != nil {
+					return err
+				}
+				defer out.Close()
+
+				w = out
+			}
+
+			if err := encode(w, r); err != nil {
 				fmt.Fprintf(os.Stderr, "encode error: %v\n", err)
 			}
+			return nil
 		},
 	}
 
@@ -24,11 +53,39 @@ func main() {
 		Use:   "decode",
 		Short: "Decode data from bencode",
 		Long:  "Decode data from bencode format to JSON.",
-		Args:  cobra.ExactArgs(0),
-		Run: func(cmd *cobra.Command, _ []string) {
-			if err := decode(os.Stdout, os.Stdin); err != nil {
+		Args:  cobra.RangeArgs(0, 2),
+		RunE: func(cmd *cobra.Command, args []string) error {
+			var (
+				r io.Reader
+				w io.Writer
+			)
+
+			r = os.Stdin
+			if len(args) > 0 {
+				in, err := os.Open(args[0])
+				if err != nil {
+					return err
+				}
+				defer in.Close()
+
+				r = in
+			}
+
+			w = os.Stdout
+			if len(args) > 1 {
+				out, err := os.Create(args[1])
+				if err != nil {
+					return err
+				}
+				defer out.Close()
+
+				w = out
+			}
+
+			if err := decode(w, r); err != nil {
 				fmt.Fprintf(os.Stderr, "decode error: %v\n", err)
 			}
+			return nil
 		},
 	}
 
@@ -36,11 +93,25 @@ func main() {
 		Use:   "show",
 		Short: "show data from bencode-encoded data",
 		Long:  "Show relevant info from bencoded-encoded data.",
-		Args:  cobra.ExactArgs(0),
-		Run: func(cmd *cobra.Command, _ []string) {
-			if err := show(os.Stdout, os.Stdin); err != nil {
+		Args:  cobra.RangeArgs(0, 1),
+		RunE: func(cmd *cobra.Command, args []string) error {
+			var r io.Reader
+
+			r = os.Stdin
+			if len(args) > 0 {
+				in, err := os.Open(args[0])
+				if err != nil {
+					return err
+				}
+				defer in.Close()
+
+				r = in
+			}
+
+			if err := show(os.Stdout, r); err != nil {
 				fmt.Fprintf(os.Stderr, "show error: %v\n", err)
 			}
+			return nil
 		},
 	}
 
